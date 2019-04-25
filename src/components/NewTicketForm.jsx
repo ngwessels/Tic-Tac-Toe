@@ -5,18 +5,24 @@ import { v4 } from 'uuid';
 
 
 
-function handleNewTicketFormSubmission(event) {
-  event.preventDefault();
-  props.onNewTicketCreation({names: _names.value, location: _location.value, issue: _issue.value, id: v4()});
-  _names.value = '';
-  _location.value = '';
-  _issue.value = '';
-}
+
 
 function NewTicketForm(props){
   let _names = null;
-let _location = null;
-let _issue = null;
+  let _location = null;
+  let _issue = null;
+
+  function handleNewTicketFormSubmission(event) {
+    event.preventDefault();
+    props.onNewTicketCreation({names: _names.value, location: _location.value, issue: _issue.value, id: v4()});
+    _names.value = '';
+    _location.value = '';
+    _issue.value = '';
+  }
+
+
+
+
 
   return (
     <div>

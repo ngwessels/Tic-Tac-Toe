@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ConfirmationQuestions from './ConfirmationQuestions';
 import PropTypes from "prop-types";
 import NewTicketForm from './NewTicketForm';

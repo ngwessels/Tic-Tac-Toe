@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Header from './Header';
 import TicketList from './TicketList';
 import NewTicketControl from './NewTicketControl';
@@ -34,5 +34,6 @@ class App extends React.Component {
       </div>
     );
   }
-
 }
+
+export default App;
