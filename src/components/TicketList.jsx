@@ -25,7 +25,6 @@ function TicketList(props){
 
 
 TicketList.propTypes = {
-  ticketList: PropTypes.object,
   ticketList: PropTypes.array,
   currentRouterPath: PropTypes.string,
   onTicketSelection: PropTypes.func
