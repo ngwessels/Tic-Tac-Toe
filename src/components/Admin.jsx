@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TicketList from './TicketList';
 import TicketDetail from './TicketDetail';
+import { connect } from 'react-redux';
 
 function Admin(props){
   let optionalSelectedTicketContent = null;
-  if (props.selectedTicket != null){
-    optionalSelectedTicketContent =  <TicketDetail selectedTicket={props.selectedTicket}/>;
+  if (props.selectedTicket > 0) {
+    optionalSelectedTicketContent = <TicketDetail selectedTicket={props.ticketList[props.selectedTicket]} />
   }
   return (
     <div>
@@ -27,4 +28,12 @@ Admin.propTypes = {
   selectedTicket: PropTypes.object
 };
 
-export default Admin;
+const mapStateToProps = state => {
+  return {
+    selectedTicket: state.selectedTicket,
+    ticketList: state.masterTicketList
+  };
+};
+
+
+export default connect(mapStateToProps)(Admin);
