@@ -28,6 +28,7 @@
       ],
     "react/jsx-pascal-case": 2,
     "react/prop-types": 2,
+    "no-case-declarations": 2,
     "react/jsx-indent": [
         "error",
         2

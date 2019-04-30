@@ -25,9 +25,10 @@ function TicketList(props){
 
 
 TicketList.propTypes = {
-  ticketList: PropTypes.array,
+  ticketList: PropTypes.object,
   currentRouterPath: PropTypes.string,
-  onTicketSelection: PropTypes.func
+  onTicketSelection: PropTypes.func,
+  formattedWaitTime: PropTypes.string
 };
 
 export default TicketList;
