@@ -13,17 +13,21 @@ function Grid(props) {
   }
 
   let pressed = function() {
-    let currentImage = document.getElementById(props.item).style.backgroundImage;
-    let image;
-    if (props.turn) {
-      image = x;
+    if(props.turn) {
+      let currentImage = document.getElementById(props.item).style.backgroundImage;
+      let image;
+      if (props.turn) {
+        image = x;
+      } else {
+        image = o;
+      }
+      if (currentImage === '') {
+        document.getElementById(props.item).style.backgroundImage = `url(${image})`;
+        props.playTurn(props.turn, props.item);
+        props.onChangeTurn();
+      }
     } else {
-      image = o;
-    }
-    if (currentImage === '') {
-      document.getElementById(props.item).style.backgroundImage = `url(${image})`;
-      props.playTurn(props.turn, props.item);
-      props.onChangeTurn();
+      console.log("Currently Player 2's turn");
     }
   }
 
