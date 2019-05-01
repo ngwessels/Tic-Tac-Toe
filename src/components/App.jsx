@@ -1,13 +1,11 @@
 import React from 'react';
 import Header from './Header';
-import TicketList from './TicketList';
-import NewTicketControl from './NewTicketControl';
 import Error404 from './Error404';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import Moment from 'moment';
-import Admin from './Admin';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import TicTacToe from './TicTacToe';
 
 class App extends React.Component {
 
@@ -53,9 +51,7 @@ class App extends React.Component {
     <div>
       <Header/>
       <Switch>
-        <Route exact path='/' render={()=><TicketList ticketList={this.props.masterTicketList} />} />
-        <Route path='/newticket' render={()=><NewTicketControl />} />
-        <Route path='/admin' render={(props)=><Admin ticketList={this.props.mastermasterTicketList} currentRouterPath={props.location.pathname} onTicketSelection={this.handlhandleChangingSelectedTicket} selectedTicket={this.state.selectedTicket} />} />
+        <Route path='/' component={TicTacToe} />
         <Route component={Error404} />
       </Switch>
     </div>
