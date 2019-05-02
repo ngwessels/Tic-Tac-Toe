@@ -13,6 +13,7 @@ class TicTacToe extends React.Component {
     this.state = {
       total: ['1', '2', '3', '4', '5', '6', '7', '8','9'],
       turn: true,
+      totalLeft: 9,
       gameOver: false,
       blocks: {
         1: ["false"],
@@ -48,24 +49,41 @@ class TicTacToe extends React.Component {
     let placed = false;
     for(let i = 0; i < length; i++) {
       let trueCount = 0;
+      let falseCount = 0;
       let options = possibilities[i];
       for(let e = 0; e < 3; e++) {
         let instance = this.state.blocks[options[e]];
         if(instance == true) {
           trueCount = trueCount + 1;
         }
+        if(instance == false) {
+          falseCount = falseCount + 1;
+        }
       }
-      if(trueCount == 3) {
+      if(falseCount == 2 && placed == false) {
+        for(let a = 0; a < options.length; a++) {
+          if(this.state.blocks[options[a]] == 'false') {
+            this.playTurn(this.state.turn, options[a]);
+            falseCount = 3;
+            break;
+          }
+        }
+      }
+      if(trueCount == 3 || falseCount == 3) {
         console.log("Game Over");
+        if(falseCount == 3) {
+          console.log("You lost to the AI Player")
+        } else {
+          console.log("You won");
+        }
+        this.clearBoard(0);
         let option = possibilities[i];
         for(let e = 0; e < 3; e++) {
           document.getElementById(option[e]).style.backgroundColor = 'Black';
-          console.log("Color is black");
           this.setState({gameOver: true});
         }
       }
       if(trueCount == 2 && placed == false && this.state.gameOver != true) {
-        console.log("There are two trues in a row");
         for(let e = 0; e < 3; e++) {
           const spot = this.state.blocks[options[e]];
           if(spot == "false") {
@@ -79,47 +97,52 @@ class TicTacToe extends React.Component {
       }
     }
     if(placed == false && this.state.gameOver != true) {
-      console.log(this.state.blocks);
       let allBlocks = this.state.blocks;
-      if(allBlocks[1] == 'false' || allBlocks[3] == 'false' || allBlocks[7] == 'false' || allBlocks[9] == 'false' || allBlocks[2] == 'false' || allBlocks[4] == 'false' || allBlocks[5] == 'false' || allBlocks[6] == 'false' || allBlocks[8] == 'false') {
-        if(allBlocks[5] != false) {
-          if(allBlocks[1] == true ) {
+      let corners = [1, 3, 7, 9];
+      let cornerOpposite = [9, 7, 3, 1];
+      let center = [5];
+      let sides = [2, 4, 6, 8];
+      let sideOpposite = [8, 4, 6, 2];
+      let sideLeft = [4, 6, 8, 2];
+      const allSides = [2,6,4,9,7,1,5,3,8];
+      for(let e = 1; e < 5; e++) {
+        if(placed == false) {
+          const random = Math.floor(Math.random() * 4);
+          if(allBlocks[corners[e - 1]] == true && allBlocks[5] == "false") {
             this.playTurn(this.state.turn, 5);
-          } else if(allBlocks[3] == true){
-            this.playTurn(this.state.turn, 5);
-          } else if(allBlocks[7] == true) {
-            this.playTurn(this.state.turn, 5);
-          } else if(allBlocks[9] == true) {
-            this.playTurn(this.state.turn, 5)
-          }
-        } else if(allBlocks[5] == false) {
-          console.log('is running')
-          let option = [2, 4, 6, 8];
-          for(let e = 0; e < option.length; e++) {
-            const random = Math.floor(Math.random() * 4);
-            if(allBlocks[option[random]] == 'false') {
-              this.playTurn(this.state.turn, option[random]);
+            console.log('1');
+            break;
+            placed = true;
+          } else if(allBlocks[corners[e - 1]] == true && allBlocks[sides[e - 1]] == "false" && allBlocks[sideOpposite[e - 1]] == true && allBlocks[sideLeft[e - 1]] == 'false' && placed == false) {
+            this.playTurn(this.state.turn, sideLeft[e - 1]);
+            console.log('2');
+            placed = true;
+            break;
+          } else if(allBlocks[sides[e - 1]] == true && allBlocks[corners[e - 1]] == 'false' && allBlocks[cornerOpposite[e - 1]] == 'false' && placed == false) {
+            console.log('3');
+            if(placed == false) {
+              console.log(placed);
+              this.playTurn(this.state.turn, cornerOpposite[e - 1]);
+              placed = true;
               break;
             }
-          }
-        } else if(allBlocks[5] == true) {
-          console.log('is running')
-          const options = [1, 3, 7, 9];
-          for(let e = 0; e < options.length; e++) {
-            const random = Math.floor(Math.random() * 4);
-            if(allBlocks[options[random]] == 'false') {
-              console.log('is running');
-              this.playTurn(this.state.turn, options[random]);
-              break;
+            break;
+          } else if(allBlocks[5] == false && placed == false) {
+            for(let a = 1; a < allSides.length + 1; a++) {
+              if(allBlocks[allSides[a]] == 'false' && placed == false) {
+                console.log('4');
+                this.playTurn(this.state.turn, allSides[a]);
+                placed = true;
+                break;
+              }
             }
-          }
-        } else if(allBlocks[2] == 'false' || allBlocks[4] == 'false' || allBlocks[6] == 'false' || allBlocks[8] == 'false') {
-          let option = [1, 3, 7, 9];
-          for(let e = 0; e < option.length; e++) {
-            const random = Math.floor(Math.random() * 4);
-            if(allBlocks[option[random]] == 'false') {
-              this.playTurn(this.state.turn, option[random]);
-              break;
+          } else if(allBlocks[5] == true && placed == false) {
+            for(let e = 0; e < 4; e++) {
+              if(allBlocks[corners[e]] == 'false') {
+                this.playTurn(this.state.turn, corners[e]);
+                placed = true;
+                break;
+              }
             }
           }
         }
@@ -129,8 +152,32 @@ class TicTacToe extends React.Component {
     this.handleChangeTurn();
 
   }
+  clearBoard(left) {
+
+    if(left == 0 || this.state.gameOver == true) {
+      let that = this;
+      setTimeout(function() {
+        for(let i = 1; i < 10; i++) {
+          document.getElementById(i).style.backgroundImage = '';
+          document.getElementById(i).style.backgroundColor = '';
+        }
+        that.setState({ blocks: {1: ["false"],
+          2: ["false"],
+          3: ["false"],
+          4: ["false"],
+          5: ["false"],
+          6: ["false"],
+          7: ["false"],
+          8: ["false"],
+          9: ["false"]}})
+      }, 2000)
+    }
+  }
 
   playTurn(turn, item) {
+    const left = this.state.totalLeft - 1;
+    this.clearBoard(left);
+    this.setState({totalLeft: left});
     if(turn == false) {
       let currentImage = document.getElementById(item).style.backgroundImage;
       document.getElementById(item).style.backgroundImage = `url(${o})`;
@@ -146,8 +193,7 @@ class TicTacToe extends React.Component {
         newArray[i] = array[i];
       }
     }
-    this.setState({blocks: newArray})
-
+    this.setState({blocks: newArray});
   }
 
   render() {
